@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookkeeping Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            background-image: url('https://source.unsplash.com/featured/1600x900/?books');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+        }
+
+        .book-card {
+            transition: transform 0.2s ease;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .add-book-form input,
+        .add-book-form button {
+            transition: all 0.3s ease;
+        }
+
+        .add-book-form input:focus,
+        .add-book-form button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+        }
+
+        .add-book-form button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Contrasty colors for headings */
+        .heading {
+            color: #f3c30c; /* Bright yellow */
+        }
+
+        .subheading {
+            color: #1a202c; /* Dark blue */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold heading mb-8">Welcome to our Bookkeeping Website</h1>
+
+        <!-- Sorting Options -->
+        <div class="flex items-center space-x-4 mb-8">
+            <span class="font-bold text-white">Sort by:</span>
+            <a href="/?sort=rating" class="text-blue-300 hover:text-blue-400 font-semibold">Rating</a>
+            <a href="/?sort=recency" class="text-blue-300 hover:text-blue-400 font-semibold">Recency</a>
+        </div>
+
+        <!-- Book Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <% books.forEach(book => { %>
+                <div class="book-card">
+                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-L.jpg" alt="<%= book.title %>" class="w-full h-48 object-cover mb-4">
+                    <h2 class="text-lg font-semibold mb-2"><%= book.title %></h2>
+                    <p class="text-gray-500 mb-2">Author: <%= book.author %></p>
+                    <p class="text-gray-500 mb-2">Rating: <%= book.rating %></p>
+                    <p class="text-gray-500 mb-2">Published: <%= book.publishedDate %></p>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Add Book Form -->
+        <div class="mt-12">
+            <h2 class="text-3xl font-semibold heading mb-4">Add New Book</h2>
+            <form action="/add-book" method="POST" class="add-book-form">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="title" class="form-label">Title:</label>
+                        <input type="text" id="title" name="title" class="border rounded-md p-2 w-full">
+                    </div>
+                    <div>
+                        <label for="author" class="form-label">Author:</label>
+                        <input type="text" id="author" name="author" class="border rounded-md p-2 w-full">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="isbn" class="form-label">ISBN Number:</label>
+                        <input type="text" id="isbn" name="isbn" class="border rounded-md p-2 w-full">
+                    </div>
+                    <div>
+                        <label for="rating" class="form-label">Rating:</label>
+                        <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" class="border rounded-md p-2 w-full">
+                    </div>
+                </div>
+                <div>
+                    <label for="publishedDate" class="form-label">Published Date:</label>
+                    <input type="date" id="publishedDate" name="publishedDate" class="border rounded-md p-2 w-full">
+                </div>
+                <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md w-full hover:bg-blue-600">Add Book</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
